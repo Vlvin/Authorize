@@ -26,5 +26,14 @@
       </div>
       <input type="hidden" asp-for="@Model.register" value="@ViewBag.reg"/>
     </form>
+    <div class="switch">
+    @if (@ViewBag.reg) {
+      <label>Already have an account? </label>
+      <a asp-controller="Auth" asp-action="Sign" asp-route-reg="false">Sign In</a>
+    } else {
+      <label>Don't have an account? </label>
+      <a asp-controller="Auth" asp-action="Sign" asp-route-reg="true">Sign Up</a>
+    }
+    </div>
   </div>
 </div>

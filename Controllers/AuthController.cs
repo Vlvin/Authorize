@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Authorize.Models;
+using Authorize.Scripts;
+
 
 namespace Authorize.Controllers;
 
@@ -21,16 +23,20 @@ public class AuthController : Controller
     public IActionResult Sign(bool reg)
     {
       ViewBag.reg = reg;
-      return View(null);
+      return View();
     }
 
 
     [HttpPost]
     public IActionResult Sign(AuthModel auth)
     {
-      Console.WriteLine(auth.Email);
-      Console.WriteLine(auth.Password);
-      return Ok($"GoodSign {auth.register}"); 
+      string result;
+      if (auth.register)
+        result = new Authenticator().SignUp(auth);
+      else
+        result = new Authenticator().SignIn(auth);
+      Console.WriteLine(result);
+      return Redirect(Url.Action(controller: "Home", action: "Index") ?? "/"); 
     }
 
 }
