@@ -25,10 +25,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item ms-right">
+                        @* <li class="nav-item ms-right">
                           <a class="nav-link btn btn-success ml-auto" asp-area="" asp-controller="Auth" asp-action="Sign" asp-route-reg="false">Sing in</a>
-                        </li>
+                        </li> *@
                     </ul>
+                    <partial name="_LoginPartial"/>
                 </div>
             </div>
         </nav>
@@ -41,7 +42,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - Authorize - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - Authorize - <a href="https://github.com/Vlvin">Vlvin</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

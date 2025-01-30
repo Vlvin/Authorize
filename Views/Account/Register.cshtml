@@ -1,0 +1,16 @@
+﻿@model AuthModel
+@{
+  ViewData["Title"] = "Sign Up";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+  <div class="container-liquid">
+    <partial name="Sign"/>
+
+    <label>Already have an account? </label>
+    <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Sign In</a>
+    </div>
+  </div>
+</div>

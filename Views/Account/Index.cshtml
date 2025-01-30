@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Authorize.DBModels
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <h1>@User.Identity?.Name!</h1>
+    } else 
+    {
+        <h1>Unauthorized</h1>
+    }
+</div>

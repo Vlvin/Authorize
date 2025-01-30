@@ -13,33 +13,31 @@ var config = builder.Configuration;
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-
-
 builder.Services.AddAuthentication(options => 
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options => {
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidIssuer = config["JWT:ValidIssuer"],
-        ValidAudience = config["JWT:ValidAudience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Secret"] ?? throw new InvalidOperationException("JWT:Secret is not set"))),
-    };
-});
+// }).AddJwtBearer(options => {
+//     options.SaveToken = true;
+//     options.Audience = options.Authority = config["JWT:ValidAudience"];
+//     options.TokenValidationParameters = new TokenValidationParameters
+//     {
+//         ValidIssuer = config["JWT:ValidIssuer"],
+//         ValidAudience = config["JWT:ValidAudience"],
+//         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Secret"] ?? throw new InvalidOperationException("JWT:Secret is not set"))),
+//     };
+}).AddCookie(JwtBearerDefaults.AuthenticationScheme);
 builder.Services.AddAuthorization();
 
 var connectionString = config.GetConnectionString("Default");
 builder.Services.AddDbContext<AuthorizeContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-builder.Services.AddIdentityCore<User>(options => {
+builder.Services.AddIdentity<User, IdentityRole>(options => {
     options.User.RequireUniqueEmail = true;
     options.SignIn.RequireConfirmedEmail = false;
-    }).AddEntityFrameworkStores<AuthorizeContext>()
-      .AddDefaultTokenProviders();
+    }).AddEntityFrameworkStores<AuthorizeContext>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -48,7 +46,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 }
 app.UseHsts();
-
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -61,6 +58,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
 
 app.Run();
